@@ -17,7 +17,7 @@ public class ProdutosController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<Produto>>> GetProdutos()
     {
-        // seu código aqui: busque todos os produtos e devolva com Ok(...)
+        
         return Ok(await _context.Produtos.ToListAsync());
     }
 }
