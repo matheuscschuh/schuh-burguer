@@ -44,6 +44,7 @@ public class PedidosController : ControllerBase
             };
 
             pedido.Itens.Add(item);
+
             
         }
         _context.Pedidos.Add(pedido);

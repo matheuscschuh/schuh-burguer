@@ -6,6 +6,7 @@ function App() {
   const [produtos, setProdutos] = useState([]);
   const [carrinho, setCarrinho] = useState([]);
   const [tela, setTela] = useState("cardapio");
+  const [enviado, setEnviado] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:5251/api/produtos")
@@ -63,6 +64,32 @@ function App() {
     return total + item.quantidade;
   }, 0);
 
+
+  function finalizarPedido() {
+
+    const lista = carrinho.map((item) => ({ 
+      produtoId: item.produto.id, 
+      quantidade: item.quantidade 
+    }));  
+
+    const objeto = { itens: lista }
+    fetch("http://localhost:5251/api/pedidos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(objeto),
+    })
+    .then((response) => {
+      if (response.ok) {
+        setCarrinho([]);
+        setEnviado(true);
+      } else {
+        console.log("Deu erro")
+      }
+    })
+     
+  }
+  
+
   return (
     <>
       <header>
@@ -84,7 +111,14 @@ function App() {
           aumentarQuantidade={aumentarQuantidade}
           diminuirQuantidade={diminuirQuantidade}
           removerDoCarrinho={removerDoCarrinho}
+          finalizarPedido={finalizarPedido}
         />
+      )}
+      {enviado && (
+        <div>
+          <p>Pedido enviado!!</p>
+          <button onClick={() => setEnviado(false)}>Fechar</button>
+        </div>
       )}
     </>
   );

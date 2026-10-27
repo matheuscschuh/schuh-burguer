@@ -4,6 +4,7 @@ export default function Carrinho({
   aumentarQuantidade,
   diminuirQuantidade,
   removerDoCarrinho,
+  finalizarPedido
 }) {
   const total = carrinho.reduce((acumulador, item) => {
     return acumulador + item.quantidade * item.produto.preco;
@@ -28,6 +29,7 @@ export default function Carrinho({
         
       ))}
       <p>Total: R$ {total.toFixed(2)}</p>
+      <button onClick={ finalizarPedido }>Finalizar Pedido</button>
       
     </>
   );
