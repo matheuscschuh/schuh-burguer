@@ -7,12 +7,17 @@ function App() {
   const [carrinho, setCarrinho] = useState([]);
   const [tela, setTela] = useState("cardapio");
   const [enviado, setEnviado] = useState(false);
+  const [mensagem, setMensagem] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:5251/api/produtos")
       .then((response) => response.json())
       .then((data) => setProdutos(data));
   }, []);
+
+  useEffect(() => {
+    setMensagem("");
+  }, [tela]);
 
   function adicionarAoCarrinho(produto) {
     const itemExistente = carrinho.find(
@@ -72,6 +77,8 @@ function App() {
       quantidade: item.quantidade 
     }));  
 
+    setMensagem("")
+
     const objeto = { itens: lista }
     fetch("http://localhost:5251/api/pedidos", {
       method: "POST",
@@ -83,8 +90,12 @@ function App() {
         setCarrinho([]);
         setEnviado(true);
       } else {
-        console.log("Deu erro")
+        setMensagem("Não foi possível finalizar o pedido. Confira os itens e tente novamente.")
       }
+    })
+    .catch((erro) => {
+      setMensagem("Não foi possível conectar ao servidor. Tente novamente em instantes.")
+      console.error(erro)
     })
      
   }
@@ -120,6 +131,7 @@ function App() {
           <button onClick={() => setEnviado(false)}>Fechar</button>
         </div>
       )}
+      {mensagem && <p>{mensagem}</p>}
     </>
   );
 }
