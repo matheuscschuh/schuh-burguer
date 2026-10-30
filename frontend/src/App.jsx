@@ -186,6 +186,7 @@ function App() {
             </p>
 
             <button
+              autoFocus
               onClick={() => setEnviado(false)}
               className="mt-6 rounded-lg bg-brand px-5 py-2 font-semibold text-white transition hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
             >
@@ -194,7 +195,14 @@ function App() {
           </div>
         </div>
       )}
-      {mensagem && <p>{mensagem}</p>}
+      {mensagem && (
+        <div
+          role="alert"
+          className="fixed bottom-6 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700 shadow-lg"
+        >
+          {mensagem}
+        </div>
+      )}
     </div>
   );
 }
