@@ -9,7 +9,11 @@ export default function Header({ totalItens, abrirCarrinho }) {
         <button
           onClick={abrirCarrinho}
           className="relative flex items-center justify-center w-11 h-11 rounded-full hover:bg-white/20 transition-colors"
-          aria-label={`Carrinho${totalItens > 0 ? `, ${totalItens} itens` : ""}`}
+          aria-label={
+            totalItens > 0
+              ? `Carrinho, ${totalItens} ${totalItens === 1 ? "item" : "itens"}`
+              : "Carrinho"
+          }
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
