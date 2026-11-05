@@ -3,6 +3,7 @@ import Cardapio from "./pages/Cardapio";
 import Carrinho from "./pages/Carrinho";
 import Header from "./components/Header";
 import ModalPedidoEnviado from "./components/ModalPedidoEnviado";
+import AvisoErro from "./components/AvisoErro";
 
 function App() {
   const [produtos, setProdutos] = useState([]);
@@ -129,12 +130,7 @@ function App() {
         <ModalPedidoEnviado aoFechar={() => setEnviado(false)}/>
       )}
       {mensagem && (
-        <div
-          role="alert"
-          className="fixed bottom-6 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700 shadow-lg"
-        >
-          {mensagem}
-        </div>
+        <AvisoErro mensagem={mensagem}/>
       )}
     </div>
   );
