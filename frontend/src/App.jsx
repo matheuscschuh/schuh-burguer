@@ -119,7 +119,7 @@ function App() {
       ) : (
         <Carrinho
           carrinho={carrinho}
-          setTela={setTela}
+          voltarCardapio={() => setTela("cardapio")}
           aumentarQuantidade={aumentarQuantidade}
           diminuirQuantidade={diminuirQuantidade}
           removerDoCarrinho={removerDoCarrinho}

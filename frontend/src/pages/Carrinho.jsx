@@ -3,7 +3,7 @@ import ResumoPedido from "../components/ResumoPedido";
 
 export default function Carrinho({
   carrinho,
-  setTela,
+  voltarCardapio,
   aumentarQuantidade,
   diminuirQuantidade,
   removerDoCarrinho,
@@ -16,7 +16,7 @@ export default function Carrinho({
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
       <button
-        onClick={() => setTela("cardapio")}
+        onClick={voltarCardapio}
         className="flex items-center gap-2 text-brand font-semibold mb-6 hover:underline"
       >
         <svg
