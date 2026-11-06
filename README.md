@@ -146,9 +146,11 @@ Acesse **http://localhost:5173**.
 │   └── Program.cs     # configuração da API, CORS e conexão com o banco
 ├── frontend/
 │   └── src/
-│       ├── pages/     # Cardapio, Carrinho
-│       ├── utils/     # formatarMoeda
-│       └── App.jsx    # estados da aplicação e chamada à API
+│       ├── components/  # ProdutoCard, ItemCarrinho, Header, ResumoPedido,
+│       │                # ModalPedidoEnviado, AvisoErro
+│       ├── pages/       # Cardapio, Carrinho
+│       ├── utils/       # formatarMoeda
+│       └── App.jsx      # estado da aplicação, chamadas à API e composição das telas
 ├── database/seed.sql  # dados de exemplo
 └── docs/img/          # imagens usadas neste README
 ```
