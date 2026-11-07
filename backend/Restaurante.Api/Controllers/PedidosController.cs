@@ -50,7 +50,7 @@ public class PedidosController : ControllerBase
         _context.Pedidos.Add(pedido);
         await _context.SaveChangesAsync();
 
-        return StatusCode(201, new { id =  pedido.Id});
+        return StatusCode(201, new { id = pedido.Id });
 
     }
 }
