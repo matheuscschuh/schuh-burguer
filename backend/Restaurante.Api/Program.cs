@@ -19,6 +19,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<RestauranteDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("RestauranteDb")));
 
+builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
+builder.Services.AddScoped<PedidoService>();    
+
 builder.Services.AddControllers();    
     
 
