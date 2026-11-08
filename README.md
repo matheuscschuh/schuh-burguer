@@ -37,10 +37,13 @@ React (carrinho)
   │  POST /api/pedidos
   │  { "itens": [ { "produtoId": 1, "quantidade": 2 } ] }
   ▼
-PedidosController ── valida a requisição
+PedidosController ── recebe a requisição e traduz o resultado em HTTP (201 ou 400)
   │
   ▼
-Entity Framework Core ── busca os produtos e grava Pedido + ItensPedido
+PedidoService ── aplica as regras: valida, busca o preço e monta o pedido
+  │
+  ▼
+PedidoRepository ── busca os produtos e grava Pedido + ItensPedido (Entity Framework Core)
   │
   ▼
 PostgreSQL
@@ -56,6 +59,7 @@ PostgreSQL
 - **Validação antes de gravar.** Lista vazia, quantidade menor ou igual a zero e produto inexistente retornam `400` sem gravar nada. O pedido e todos os seus itens são salvos juntos, numa única operação.
 - **O total não é guardado no banco.** Ele é calculado somando `quantidade × preço` dos itens.
 - **O carrinho vive no front-end** (estado do React). Sem login nesta versão, ele só vira dado persistente quando se torna um pedido.
+- **Regras de negócio fora do controller.** O `PedidoService` valida e monta o pedido sem conhecer HTTP: quando algo é inválido, lança uma `PedidoInvalidoException`, e o controller a traduz em `400` com a mensagem do erro. O `PedidoService` depende da interface `IPedidoRepository`, e não do banco, o que permite testá-lo com um repositório falso.
 - **Segredos fora do repositório.** A senha do banco fica nos *user-secrets* do .NET, e não no código.
 
 ### Modelo de dados
@@ -139,6 +143,9 @@ Acesse **http://localhost:5173**.
 .
 ├── backend/Restaurante.Api/
 │   ├── Controllers/   # ProdutosController, PedidosController
+│   ├── Services/      # PedidoService (regras de negócio do pedido)
+│   ├── Repositories/  # IPedidoRepository, PedidoRepository (acesso ao banco)
+│   ├── Exceptions/    # PedidoInvalidoException
 │   ├── Data/          # RestauranteDbContext
 │   ├── Domain/        # Produto, Pedido, ItemPedido
 │   ├── Dtos/          # PedidoCriarDto, ItemPedidoDto
@@ -158,8 +165,8 @@ Acesse **http://localhost:5173**.
 ## Próximos passos
 
 - Consultar um pedido por id (`GET /api/pedidos/{id}`) e uma tela de confirmação própria
-- Separar a lógica em camadas (Service e Repository), hoje os controllers acessam o `DbContext` diretamente por simplicidade
-- Testes automatizados no back-end
+- Levar o cardápio (`ProdutosController`) para Service e Repository; hoje só o fluxo de pedidos está em camadas
+- Testes automatizados no back-end (unitários do `PedidoService`)
 - Mover a URL da API no front-end para uma variável de ambiente
 - Categorias no cardápio, autenticação e painel para cadastrar produtos
 - Docker e publicação online
