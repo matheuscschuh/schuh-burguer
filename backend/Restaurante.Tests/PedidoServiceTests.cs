@@ -17,7 +17,7 @@ public async Task CriarPedidoAsync_ProdutoInexistente_LancaExcecaoENaoSalvar()
     var ex = await Assert.ThrowsAsync<PedidoInvalidoException>(() => service.CriarPedidoAsync(dto));
 
     // VERIFICAR o resto
-    Assert.Equal("Produto não existe blablabla", ex.Message);
+    Assert.Equal("Produto não existe", ex.Message);
     Assert.Empty(repo.PedidosSalvos);
 }
 }
