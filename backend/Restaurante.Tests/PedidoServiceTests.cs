@@ -39,4 +39,23 @@ public class PedidoServiceTests
         Assert.Equal("Item não possui quantidade válida", ex.Message);
         Assert.Empty(repo.PedidosSalvos);
     }
+
+    [Fact]
+    public async Task CriarPedidoAsync_ListaVazia_LancaExcecaoENaoSalvar()
+    {
+        // PREPARAR
+        var repo = new RepositorioFalso();
+        var service = new PedidoService(repo);
+        var dto = new PedidoCriarDto
+        {
+            Itens = new List<ItemPedidoDto> {}
+        };
+
+        // EXECUTAR + VERIFICAR a exceção
+        var ex = await Assert.ThrowsAsync<PedidoInvalidoException>(() => service.CriarPedidoAsync(dto));
+
+        // VERIFICAR o resto
+        Assert.Equal("Lista vazia", ex.Message);
+        Assert.Empty(repo.PedidosSalvos);
+    }
 }
