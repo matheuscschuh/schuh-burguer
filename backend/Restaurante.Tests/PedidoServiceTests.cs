@@ -58,4 +58,27 @@ public class PedidoServiceTests
         Assert.Equal("Lista vazia", ex.Message);
         Assert.Empty(repo.PedidosSalvos);
     }
+
+    [Fact] 
+    public async Task CriarPedidoAsync_ProdutoValido_SalvaPedidoComPrecoDoProduto()
+    {
+        // PREPARAR
+        var repo = new RepositorioFalso { ProdutoDevolvido = new Produto { Id = 1, Preco = 25.99m } };
+        var service = new PedidoService(repo);
+        var dto = new PedidoCriarDto
+        {
+            Itens = new List<ItemPedidoDto> { new ItemPedidoDto { ProdutoId = 1, Quantidade = 2 } }
+        };
+
+        // EXECUTAR
+        await service.CriarPedidoAsync(dto);
+
+        // VERIFICAR: um pedido foi salvo
+        var pedido = Assert.Single(repo.PedidosSalvos);
+
+        // VERIFICAR: dentro dele, o item certo
+        var item = Assert.Single(pedido.Itens);
+        Assert.Equal(25.99m, item.PrecoUnitario);
+        Assert.Equal(2, item.Quantidade);
+    }
 }
