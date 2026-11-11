@@ -1,14 +1,13 @@
 import ItemCarrinho from "../components/ItemCarrinho";
 import ResumoPedido from "../components/ResumoPedido";
+import { useCarrinho } from "../contexts/CarrinhoContext";
 
 export default function Carrinho({
-  carrinho,
   voltarCardapio,
-  aumentarQuantidade,
-  diminuirQuantidade,
-  removerDoCarrinho,
   finalizarPedido,
 }) {
+  const { carrinho } = useCarrinho();
+
   const total = carrinho.reduce((acumulador, item) => {
     return acumulador + item.quantidade * item.produto.preco;
   }, 0);
@@ -65,9 +64,6 @@ export default function Carrinho({
               <ItemCarrinho 
                 key={item.produto.id}
                 item={item}
-                aumentarQuantidade={aumentarQuantidade}
-                diminuirQuantidade={diminuirQuantidade}
-                removerDoCarrinho={removerDoCarrinho}
               />
             ))}
           </div>

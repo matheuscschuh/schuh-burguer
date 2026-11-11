@@ -1,6 +1,8 @@
 import { formatarMoeda } from "../utils/formatarMoeda";
+import { useCarrinho } from "../contexts/CarrinhoContext";
 
-export default function ProdutoCard({ produto, adicionarAoCarrinho }) {
+export default function ProdutoCard({ produto }) {
+  const { adicionarAoCarrinho } = useCarrinho();
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col">
       <div className="bg-gray-100 h-48 overflow-hidden">

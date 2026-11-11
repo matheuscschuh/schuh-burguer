@@ -1,15 +1,12 @@
 import { formatarMoeda } from "../utils/formatarMoeda";
+import { useCarrinho } from "../contexts/CarrinhoContext";
 
-export default function ItemCarrinho({
-  item,
-  aumentarQuantidade,
-  diminuirQuantidade,
-  removerDoCarrinho,
-}) {
+export default function ItemCarrinho({ item }) {
+  const { aumentarQuantidade, diminuirQuantidade, removerDoCarrinho } =
+    useCarrinho();
+
   return (
-    <div
-      className="flex items-center gap-4 bg-white border border-gray-100 rounded-2xl p-4 shadow-sm"
-    >
+    <div className="flex items-center gap-4 bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
       <div className="w-20 h-20 rounded-xl overflow-hidden bg-gray-100 shrink-0">
         <img
           src={item.produto.imagemUrl}

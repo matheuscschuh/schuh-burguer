@@ -1,6 +1,6 @@
 import ProdutoCard from "../components/ProdutoCard";
 
-export default function Cardapio({ produtos, adicionarAoCarrinho }) {
+export default function Cardapio({ produtos }) {
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
       <div className="mb-6">
@@ -15,7 +15,6 @@ export default function Cardapio({ produtos, adicionarAoCarrinho }) {
           <ProdutoCard 
             key={produto.id}
             produto={produto}
-            adicionarAoCarrinho={adicionarAoCarrinho}
           />
         ))}
       </div>

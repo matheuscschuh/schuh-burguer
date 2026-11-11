@@ -1,4 +1,7 @@
-export default function Header({ totalItens, abrirCarrinho }) {
+import { useCarrinho } from "../contexts/CarrinhoContext";
+
+export default function Header({ abrirCarrinho }) {
+  const { totalItens } = useCarrinho();
   return (
     <header className="sticky top-0 z-50 bg-brand shadow-lg">
       <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
