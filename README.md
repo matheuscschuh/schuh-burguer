@@ -26,6 +26,7 @@ A interface é baseada em um protótipo feito no Figma. O projeto cobre o caminh
 |---|---|
 | Front-end | React, Vite, JavaScript, Tailwind CSS 4 |
 | Back-end | C#, ASP.NET Core Web API (.NET 10), Entity Framework Core |
+| Testes | xUnit (testes unitários do back-end) |
 | Banco de dados | PostgreSQL (driver Npgsql) |
 
 ## Como funciona
@@ -137,6 +138,15 @@ npm run dev
 
 Acesse **http://localhost:5173**.
 
+### 4. Testes
+
+```bash
+cd backend
+dotnet test
+```
+
+Os testes unitários cobrem as regras do `PedidoService` (lista vazia, quantidade inválida, produto inexistente e pedido válido). Eles usam um repositório falso em memória, então não precisam de banco nem da API no ar.
+
 ## Estrutura do projeto
 
 ```
@@ -151,6 +161,7 @@ Acesse **http://localhost:5173**.
 │   ├── Dtos/          # PedidoCriarDto, ItemPedidoDto
 │   ├── Migrations/    # histórico do banco (EF Core)
 │   └── Program.cs     # configuração da API, CORS e conexão com o banco
+├── backend/Restaurante.Tests/  # testes unitários do PedidoService (xUnit)
 ├── frontend/
 │   └── src/
 │       ├── components/  # ProdutoCard, ItemCarrinho, Header, ResumoPedido,
@@ -166,7 +177,6 @@ Acesse **http://localhost:5173**.
 
 - Consultar um pedido por id (`GET /api/pedidos/{id}`) e uma tela de confirmação própria
 - Levar o cardápio (`ProdutosController`) para Service e Repository; hoje só o fluxo de pedidos está em camadas
-- Testes automatizados no back-end (unitários do `PedidoService`)
 - Mover a URL da API no front-end para uma variável de ambiente
 - Categorias no cardápio, autenticação e painel para cadastrar produtos
 - Docker e publicação online
