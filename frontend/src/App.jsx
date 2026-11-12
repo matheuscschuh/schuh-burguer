@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import ModalPedidoEnviado from "./components/ModalPedidoEnviado";
 import AvisoErro from "./components/AvisoErro";
 import { useCarrinho } from "./contexts/CarrinhoContext";
+import { Routes, Route } from 'react-router';
 
 function App() {
   const [produtos, setProdutos] = useState([]);
@@ -57,16 +58,15 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header abrirCarrinho={() => setTela("carrinho")} />
+      <Header />
 
-      {tela === "cardapio" ? (
-        <Cardapio produtos={produtos} />
-      ) : (
-        <Carrinho
-          voltarCardapio={() => setTela("cardapio")}
+      <Routes>
+        <Route path="/" element={ <Cardapio produtos={produtos} />} />
+        <Route path="/carrinho" element={<Carrinho
           finalizarPedido={finalizarPedido}
-        />
-      )}
+        />} />
+      </Routes>
+
       {enviado && <ModalPedidoEnviado aoFechar={() => setEnviado(false)} />}
       {mensagem && <AvisoErro mensagem={mensagem} />}
     </div>

@@ -1,9 +1,9 @@
 import ItemCarrinho from "../components/ItemCarrinho";
 import ResumoPedido from "../components/ResumoPedido";
 import { useCarrinho } from "../contexts/CarrinhoContext";
+import { Link } from "react-router";
 
 export default function Carrinho({
-  voltarCardapio,
   finalizarPedido,
 }) {
   const { carrinho } = useCarrinho();
@@ -14,8 +14,8 @@ export default function Carrinho({
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
-      <button
-        onClick={voltarCardapio}
+      <Link
+        to="/"
         className="flex items-center gap-2 text-brand font-semibold mb-6 hover:underline"
       >
         <svg
@@ -29,7 +29,7 @@ export default function Carrinho({
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
         Voltar ao Cardápio
-      </button>
+      </Link>
 
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Seu Carrinho</h2>
 

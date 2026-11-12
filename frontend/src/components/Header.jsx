@@ -1,6 +1,7 @@
 import { useCarrinho } from "../contexts/CarrinhoContext";
+import { Link } from "react-router";
 
-export default function Header({ abrirCarrinho }) {
+export default function Header() {
   const { totalItens } = useCarrinho();
   return (
     <header className="sticky top-0 z-50 bg-brand shadow-lg">
@@ -9,8 +10,8 @@ export default function Header({ abrirCarrinho }) {
           Schuh Burguer
         </h1>
 
-        <button
-          onClick={abrirCarrinho}
+        <Link
+          to="/carrinho"
           className="relative flex items-center justify-center w-11 h-11 rounded-full hover:bg-white/20 transition-colors"
           aria-label={
             totalItens > 0
@@ -38,7 +39,7 @@ export default function Header({ abrirCarrinho }) {
               {totalItens}
             </span>
           )}
-        </button>
+        </Link>
       </div>
     </header>
   );
