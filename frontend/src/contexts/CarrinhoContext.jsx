@@ -1,9 +1,17 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const CarrinhoContext = createContext(null);
 
 export default function CarrinhoProvider({ children }) {
-  const [carrinho, setCarrinho] = useState([]);
+  const [carrinho, setCarrinho] = useState(() => {
+    const guardado = localStorage.getItem("carrinho");
+    return guardado ? JSON.parse(guardado) : [];
+  });
+  
+  useEffect(() => {
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+  }, [carrinho]);
+  
   function removerDoCarrinho(produtoId) {
     setCarrinho(carrinho.filter((item) => item.produto.id !== produtoId));
   }
