@@ -6,13 +6,14 @@ import ModalPedidoEnviado from "./components/ModalPedidoEnviado";
 import AvisoErro from "./components/AvisoErro";
 import { useCarrinho } from "./contexts/CarrinhoContext";
 import { Routes, Route } from 'react-router';
+import { useLocation } from "react-router";
 
 function App() {
   const [produtos, setProdutos] = useState([]);
   const { carrinho, limparCarrinho } = useCarrinho();
-  const [tela, setTela] = useState("cardapio");
   const [enviado, setEnviado] = useState(false);
   const [mensagem, setMensagem] = useState("");
+  const rota = useLocation();
 
   useEffect(() => {
     fetch("http://localhost:5251/api/produtos")
@@ -22,7 +23,7 @@ function App() {
 
   useEffect(() => {
     setMensagem("");
-  }, [tela]);
+  }, [rota.pathname]);
 
   function finalizarPedido() {
     const lista = carrinho.map((item) => ({
