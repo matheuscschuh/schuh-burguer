@@ -6,9 +6,11 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-brand shadow-lg">
       <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-        <h1 className="font-display text-white text-2xl font-black tracking-tight select-none">
-          Schuh Burguer
-        </h1>
+        <Link to="/">
+          <h1 className="font-display text-white text-2xl font-black tracking-tight select-none">
+            Schuh Burguer
+          </h1>
+        </Link>
 
         <Link
           to="/carrinho"

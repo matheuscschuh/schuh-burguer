@@ -7,6 +7,7 @@ import AvisoErro from "./components/AvisoErro";
 import { useCarrinho } from "./contexts/CarrinhoContext";
 import { Routes, Route } from 'react-router';
 import { useLocation } from "react-router";
+import NaoEncontrada from "./pages/NaoEncontrada";
 
 function App() {
   const [produtos, setProdutos] = useState([]);
@@ -66,6 +67,7 @@ function App() {
         <Route path="/carrinho" element={<Carrinho
           finalizarPedido={finalizarPedido}
         />} />
+        <Route path="*" element={ <NaoEncontrada />}></Route>
       </Routes>
 
       {enviado && <ModalPedidoEnviado aoFechar={() => setEnviado(false)} />}
