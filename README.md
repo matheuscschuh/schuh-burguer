@@ -13,7 +13,8 @@ A interface é baseada em um protótipo feito no Figma. O projeto cobre o caminh
 ## Funcionalidades
 
 - Cardápio carregado do banco de dados, com foto, descrição e preço de cada item
-- Carrinho com adição, aumento e redução de quantidade, remoção de itens e total em tempo real
+- Carrinho com adição, aumento e redução de quantidade, remoção de itens e total em tempo real, guardado no navegador (continua ao recarregar a página)
+- Duas telas com endereço próprio: cardápio (`/`) e carrinho (`/carrinho`), com o botão voltar do navegador funcionando
 - Contador de itens no cabeçalho
 - Finalização do pedido: a API valida os dados e grava o pedido e seus itens no PostgreSQL
 - Confirmação em modal ("Pedido enviado!")
@@ -24,7 +25,7 @@ A interface é baseada em um protótipo feito no Figma. O projeto cobre o caminh
 
 | Camada | Tecnologias |
 |---|---|
-| Front-end | React, Vite, JavaScript, Tailwind CSS 4 |
+| Front-end | React, React Router, Vite, JavaScript, Tailwind CSS 4 |
 | Back-end | C#, ASP.NET Core Web API (.NET 10), Entity Framework Core |
 | Testes | xUnit (testes unitários do back-end) |
 | Banco de dados | PostgreSQL (driver Npgsql) |
@@ -59,7 +60,8 @@ PostgreSQL
 - **O preço fica registrado no item do pedido** (`PrecoUnitario`). Se o preço de um produto mudar depois, os pedidos antigos continuam com o valor da época.
 - **Validação antes de gravar.** Lista vazia, quantidade menor ou igual a zero e produto inexistente retornam `400` sem gravar nada. O pedido e todos os seus itens são salvos juntos, numa única operação.
 - **O total não é guardado no banco.** Ele é calculado somando `quantidade × preço` dos itens.
-- **O carrinho vive no front-end** (estado do React). Sem login nesta versão, ele só vira dado persistente quando se torna um pedido.
+- **O carrinho vive no front-end** (estado do React), compartilhado entre as telas por um Context (`CarrinhoContext`), sem passar props de componente em componente, e guardado no `localStorage` do navegador para sobreviver a recarregar a página. Sem login nesta versão, ele só vira dado no servidor quando se torna um pedido.
+- **A URL decide a tela.** O React Router mapeia `/` para o cardápio e `/carrinho` para o carrinho, e o cabeçalho e o botão de voltar são links, sem estado de "tela atual".
 - **Regras de negócio fora do controller.** O `PedidoService` valida e monta o pedido sem conhecer HTTP: quando algo é inválido, lança uma `PedidoInvalidoException`, e o controller a traduz em `400` com a mensagem do erro. O `PedidoService` depende da interface `IPedidoRepository`, e não do banco, o que permite testá-lo com um repositório falso.
 - **Segredos fora do repositório.** A senha do banco fica nos *user-secrets* do .NET, e não no código.
 
@@ -166,6 +168,7 @@ Os testes unitários cobrem as regras do `PedidoService` (lista vazia, quantidad
 │   └── src/
 │       ├── components/  # ProdutoCard, ItemCarrinho, Header, ResumoPedido,
 │       │                # ModalPedidoEnviado, AvisoErro
+│       ├── contexts/    # CarrinhoContext (estado e operações do carrinho)
 │       ├── pages/       # Cardapio, Carrinho
 │       ├── utils/       # formatarMoeda
 │       └── App.jsx      # estado da aplicação, chamadas à API e composição das telas

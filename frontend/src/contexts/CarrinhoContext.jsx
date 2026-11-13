@@ -4,14 +4,19 @@ const CarrinhoContext = createContext(null);
 
 export default function CarrinhoProvider({ children }) {
   const [carrinho, setCarrinho] = useState(() => {
-    const guardado = localStorage.getItem("carrinho");
-    return guardado ? JSON.parse(guardado) : [];
+    try {
+      const guardado = localStorage.getItem("carrinho");
+      const valor = guardado ? JSON.parse(guardado) : [];
+      return Array.isArray(valor) ? valor : [];
+    } catch {
+      return [];
+    }
   });
-  
+
   useEffect(() => {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
   }, [carrinho]);
-  
+
   function removerDoCarrinho(produtoId) {
     setCarrinho(carrinho.filter((item) => item.produto.id !== produtoId));
   }
