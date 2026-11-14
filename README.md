@@ -15,7 +15,8 @@ A interface é baseada em um protótipo feito no Figma. O projeto cobre o caminh
 - Cardápio carregado do banco de dados, com foto, descrição e preço de cada item
 - Carrinho com adição, aumento e redução de quantidade, remoção de itens e total em tempo real, guardado no navegador (continua ao recarregar a página)
 - Duas telas com endereço próprio: cardápio (`/`) e carrinho (`/carrinho`), com o botão voltar do navegador funcionando
-- Contador de itens no cabeçalho
+- Contador de itens no cabeçalho e logo clicável que leva de volta ao cardápio
+- Página "não encontrada" para endereços que não existem, com link de volta ao cardápio
 - Finalização do pedido: a API valida os dados e grava o pedido e seus itens no PostgreSQL
 - Confirmação em modal ("Pedido enviado!")
 - Tela de carrinho vazio e avisos de erro quando a API recusa o pedido ou está fora do ar
@@ -61,7 +62,7 @@ PostgreSQL
 - **Validação antes de gravar.** Lista vazia, quantidade menor ou igual a zero e produto inexistente retornam `400` sem gravar nada. O pedido e todos os seus itens são salvos juntos, numa única operação.
 - **O total não é guardado no banco.** Ele é calculado somando `quantidade × preço` dos itens.
 - **O carrinho vive no front-end** (estado do React), compartilhado entre as telas por um Context (`CarrinhoContext`), sem passar props de componente em componente, e guardado no `localStorage` do navegador para sobreviver a recarregar a página. Sem login nesta versão, ele só vira dado no servidor quando se torna um pedido.
-- **A URL decide a tela.** O React Router mapeia `/` para o cardápio e `/carrinho` para o carrinho, e o cabeçalho e o botão de voltar são links, sem estado de "tela atual".
+- **A URL decide a tela.** O React Router mapeia `/` para o cardápio e `/carrinho` para o carrinho, e o cabeçalho e o botão de voltar são links, sem estado de "tela atual". Qualquer outro endereço (`path="*"`) cai numa página "não encontrada"; como é uma SPA, o servidor ainda responde `200` e quem decide a tela é o React.
 - **Regras de negócio fora do controller.** O `PedidoService` valida e monta o pedido sem conhecer HTTP: quando algo é inválido, lança uma `PedidoInvalidoException`, e o controller a traduz em `400` com a mensagem do erro. O `PedidoService` depende da interface `IPedidoRepository`, e não do banco, o que permite testá-lo com um repositório falso.
 - **Segredos fora do repositório.** A senha do banco fica nos *user-secrets* do .NET, e não no código.
 
@@ -169,7 +170,7 @@ Os testes unitários cobrem as regras do `PedidoService` (lista vazia, quantidad
 │       ├── components/  # ProdutoCard, ItemCarrinho, Header, ResumoPedido,
 │       │                # ModalPedidoEnviado, AvisoErro
 │       ├── contexts/    # CarrinhoContext (estado e operações do carrinho)
-│       ├── pages/       # Cardapio, Carrinho
+│       ├── pages/       # Cardapio, Carrinho, NaoEncontrada
 │       ├── utils/       # formatarMoeda
 │       └── App.jsx      # estado da aplicação, chamadas à API e composição das telas
 ├── database/seed.sql  # dados de exemplo
@@ -178,8 +179,11 @@ Os testes unitários cobrem as regras do `PedidoService` (lista vazia, quantidad
 
 ## Próximos passos
 
+- Cadastro e login de usuários com JWT, ligando cada pedido ao seu cliente
+- Pagamento simulado no fechamento do pedido (o servidor nunca guarda dados de cartão)
 - Consultar um pedido por id (`GET /api/pedidos/{id}`) e uma tela de confirmação própria
 - Levar o cardápio (`ProdutosController`) para Service e Repository; hoje só o fluxo de pedidos está em camadas
+- Ampliar os testes: um teste de integração do `POST /api/pedidos` e testes do `CarrinhoContext` (hoje só o `PedidoService` é coberto)
 - Mover a URL da API no front-end para uma variável de ambiente
-- Categorias no cardápio, autenticação e painel para cadastrar produtos
+- Categorias no cardápio e painel para cadastrar produtos
 - Docker e publicação online
